@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="authentificationTests" project="projet_CL" tests="4" started="4" failures="0" errors="0" ignored="0">
+  <testsuite name="unitTests.authentificationTests" time="0.001">
+    <testcase name="testeBonIdBonMotDePasse" classname="unitTests.authentificationTests" time="0.0"/>
+    <testcase name="testeBonIdMauvaisMotDePasse" classname="unitTests.authentificationTests" time="0.0"/>
+    <testcase name="testeMauvaisIdBonMotDePasse" classname="unitTests.authentificationTests" time="0.001"/>
+    <testcase name="testeMauvaisIdMauvaisMotDePasse" classname="unitTests.authentificationTests" time="0.0"/>
+  </testsuite>
+</testrun>
