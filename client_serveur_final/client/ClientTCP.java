@@ -8,7 +8,6 @@ public class ClientTCP {
 	private int numeroPort;
 
 	private String nomServeur;
-	private int a;
 
 	private Socket socketServeur;
 
