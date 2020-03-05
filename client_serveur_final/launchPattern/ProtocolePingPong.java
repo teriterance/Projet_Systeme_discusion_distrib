@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.Socket;
 
 import servPattern.IContext;
 import servPattern.IProtocole;
@@ -11,7 +12,7 @@ import servPattern.IProtocole;
 
 public class ProtocolePingPong implements IProtocole {
 
-	public void execute( IContext c , InputStream unInput , OutputStream unOutput ) {
+	public void execute( IContext c , InputStream unInput , OutputStream unOutput, Socket clientSocket) {
 		
 		String inputReq;
 		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));

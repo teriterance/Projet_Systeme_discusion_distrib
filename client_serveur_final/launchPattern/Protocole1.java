@@ -4,19 +4,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.Socket;
+import java.util.LinkedList;
 
 import servPattern.Authentification;
 import servPattern.IContext;
 import servPattern.IProtocole;
-
+import servPattern.Utilisateur;
 
 public class Protocole1 implements IProtocole {
 	boolean etatconnexion;
-	
+	public LinkedList<Utilisateur> UsersList;
 	public Protocole1() {
 		etatconnexion = false; //initialisation à false 
+		UsersList = new LinkedList<Utilisateur>(); 
 	}
-	public void execute( IContext c , InputStream unInput , OutputStream unOutput ) {
+	public void execute( IContext c , InputStream unInput , OutputStream unOutput,Socket clientSocket ) {
 		
 		String inputReq;
 		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));
@@ -35,24 +38,29 @@ public class Protocole1 implements IProtocole {
 					if (authen.run()) {
 						valeurExpediee = "OK";
 						System.out.println(" Reponse serveur "	+ valeurExpediee);
+						etatconnexion = true; 
+						UsersList.add(new Utilisateur(clientSocket, chaines[0]));
+						for(Utilisateur user : UsersList)
+							System.out.print(user);
 					}
 					else {
 						valeurExpediee = "NOP";
 						System.out.println(" Reponse serveur "	+ valeurExpediee);
 					}
 					os.println(valeurExpediee);
-					etatconnexion = true;          // Le client est bien connecté
+					         // Le client est bien connecté
 				}
 			}
-			if(etatconnexion) execute_connexion_OK(c, unInput, unOutput);
+			if(etatconnexion) execute_connexion_OK(c, unInput, unOutput, clientSocket);
 			
 			
 		} catch ( Exception e) {
-			System.out.println(" Pb d'exception ");
+			System.out.println(" Pb d'exception " + e);
+			e.printStackTrace();
 		}			
 	}
 	
-	public void execute_connexion_OK(IContext c, InputStream unInput , OutputStream unOutput) {
+	public void execute_connexion_OK(IContext c, InputStream unInput , OutputStream unOutput, Socket clientSocket) {
 		String inputReq;
 		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));
 		PrintStream os = new PrintStream(unOutput);
@@ -81,7 +89,7 @@ public class Protocole1 implements IProtocole {
 				os.println(valeurExpediee);
 				}
 			}
-			if(!etatconnexion)execute( c ,unInput ,  unOutput );
+			if(!etatconnexion)execute( c ,unInput ,  unOutput, clientSocket );
 			
 		} catch ( Exception e) {
 			System.out.println(" Pb d'exception ");
