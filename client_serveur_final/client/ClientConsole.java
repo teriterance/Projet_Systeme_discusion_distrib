@@ -60,4 +60,11 @@ public class ClientConsole extends ClientTCP {
 		}
 	}
 	
+	void waitServerMessage() {
+		String message = null;
+		
+		while ( (message = socIn.getInputStream().read() ) != 1 ) {
+			
+		}
+	}
 }

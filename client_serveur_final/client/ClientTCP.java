@@ -5,15 +5,15 @@ import java.net.*;
 
 public class ClientTCP {
 
-	private int numeroPort;
+	protected int numeroPort;
 
-	private String nomServeur;
+	protected String nomServeur;
 
-	private Socket socketServeur;
+	protected Socket socketServeur;
 
-	private PrintStream socOut;
+	protected PrintStream socOut;
 
-	private BufferedReader socIn;	
+	protected BufferedReader socIn;	
 	
 	/** Un client se connecte a un serveur identifie par un nom (unNomServeur), sur un port unNumero */
 	public  ClientTCP(String unNomServeur, int unNumero) {        
