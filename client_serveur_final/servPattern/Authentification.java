@@ -11,12 +11,12 @@ public class Authentification {
 	String ligne;
 	String id;
 	String mdp;
-	
+	boolean end;
 	public Authentification(String id, String mdp) {
 		this.id = id;
 		this.mdp = mdp;
 		lecteurAvecBuffer = null;
-		
+		this.end = false;
 	}
 	public boolean run() throws IOException
 	  {
@@ -31,10 +31,14 @@ public class Authentification {
 	      {
 		System.out.println("Erreur d'ouverture");
 	      }
-	    while ((ligne = lecteurAvecBuffer.readLine()) != null) {
-	    	String chaines[] = ligne.split(":",2);
-	    	if(chaines[0] == this.id && chaines[1] == this.mdp) {
+	    while ((ligne = lecteurAvecBuffer.readLine()) != null)/* || (!end) */ {
+	    	String chaines[] = ligne.split(":");
+	    	if((chaines[0].equals(this.id)) && (chaines[1].equals(this.mdp))) {
+	    	    lecteurAvecBuffer.close();
+	    	    System.out.println("la");
+	    	//	this.end = true;
 	    		return true;
+	
 	    	}
 	    }
 	    lecteurAvecBuffer.close();

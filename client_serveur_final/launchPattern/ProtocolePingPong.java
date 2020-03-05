@@ -14,8 +14,7 @@ public class ProtocolePingPong implements IProtocole {
 	public void execute( IContext c , InputStream unInput , OutputStream unOutput ) {
 		
 		String inputReq;
-		BufferedReader is = new BufferedReader(new InputStreamReader(
-				unInput));
+		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));
 		PrintStream os = new PrintStream(unOutput);
 		try {
 			String valeurExpediee = "";

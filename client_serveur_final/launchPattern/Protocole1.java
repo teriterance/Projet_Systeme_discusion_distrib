@@ -29,7 +29,8 @@ public class Protocole1 implements IProtocole {
 				if ((inputReq = is.readLine()) != null) {
 
 					System.out.println(" Identifiants Recus " + inputReq);
-					String chaines[] = inputReq.split(":",2);
+					String chaines[] = inputReq.split(":");
+					System.out.println(chaines[0] + " et " + chaines[1]);
 					Authentification authen = new Authentification(chaines[0], chaines[1]);
 					if (authen.run()) {
 						valeurExpediee = "OK";
@@ -43,7 +44,7 @@ public class Protocole1 implements IProtocole {
 					etatconnexion = true;          // Le client est bien connecté
 				}
 			}
-			if(etatconnexion) execute_connexion_OK(unInput, unOutput);
+			if(etatconnexion) execute_connexion_OK(c, unInput, unOutput);
 			
 			
 		} catch ( Exception e) {
@@ -51,7 +52,7 @@ public class Protocole1 implements IProtocole {
 		}			
 	}
 	
-	public void execute_connexion_OK(InputStream unInput , OutputStream unOutput) {
+	public void execute_connexion_OK(IContext c, InputStream unInput , OutputStream unOutput) {
 		String inputReq;
 		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));
 		PrintStream os = new PrintStream(unOutput);
@@ -63,17 +64,25 @@ public class Protocole1 implements IProtocole {
 				
 				System.out.println(" Message Recu " + inputReq);
 				String chaines[] = inputReq.split(":",2);
-				if (chaines[0].contentEquals("PING")) {
+				if (chaines[0].contentEquals("stop")) {
 					valeurExpediee = "OK";
 					System.out.println(" Reponse serveur "	+ valeurExpediee);
+					etatconnexion = false;
 				}
-				else {
-					valeurExpediee = "NOP";
+				else {  //on transmet le message du client vers le destinataire en chaines[0]
+					
+				//	if(ledistinataireexisteetquilestconnecte) {
+				//		toledestinataire.envoieMSG;
+				//	}
+				//	if()
+					valeurExpediee = "";
 					System.out.println(" Reponse serveur "	+ valeurExpediee);
 				}
 				os.println(valeurExpediee);
 				}
 			}
+			if(!etatconnexion)execute( c ,unInput ,  unOutput );
+			
 		} catch ( Exception e) {
 			System.out.println(" Pb d'exception ");
 		}
