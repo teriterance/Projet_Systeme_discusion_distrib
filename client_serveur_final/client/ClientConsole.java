@@ -37,34 +37,26 @@ public class ClientConsole extends ClientTCP {
 		return recMessage;
 	}
 	
-	void setUtilisateurInfos(String nomUtilisateur, String motDePasse) {
+	public void setUtilisateurInfos(String nomUtilisateur, String motDePasse) {
 		// etabilsement des informations de l'utilisateur
 		this.nomUtilesateur = nomUtilisateur;
 		this.motDePasse = motDePasse;
 	}
 	
-	boolean getConnectionState() {
+	public boolean getConnectionState() {
 		// pour savoir externement l'etat du client
 		return etatConnection;
 	}
 	
-	void connectionAuServeurBase() {
+	public boolean connectionAuServeurBase() {
 		//connection de l'application client au serveur
-		super.connecterAuServeur();
+		return super.connecterAuServeur();
 	}
 	
-	void connectionAuServeur() {
+	public void connectionAuServeur() {
 		// connection du client sur son compte
 		while( !etatConnection ) {
 			this.envoiMessageConnection();
-		}
-	}
-	
-	void waitServerMessage() {
-		String message = null;
-		
-		while ( (message = socIn.getInputStream().read() ) != 1 ) {
-			
 		}
 	}
 }
