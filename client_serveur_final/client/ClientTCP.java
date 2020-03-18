@@ -5,20 +5,28 @@ import java.net.*;
 
 public class ClientTCP {
 
-	protected int numeroPort;
+	private int numeroPort;
 
-	protected String nomServeur;
+	private String nomServeur;
 
-	protected Socket socketServeur;
+	private Socket socketServeur;
 
-	protected PrintStream socOut;
+	private PrintStream socOut;
 
-	protected BufferedReader socIn;	
+	private BufferedReader socIn;	
+
+	private String nomUtilesateur;
+	
+	private String motDePasse;
+	 
+	boolean etatConnection;
+	
 	
 	/** Un client se connecte a un serveur identifie par un nom (unNomServeur), sur un port unNumero */
 	public  ClientTCP(String unNomServeur, int unNumero) {        
 		numeroPort = unNumero;
 		nomServeur = unNomServeur;
+		etatConnection = false;
 	} 
 
 	public boolean connecterAuServeur() {        
@@ -55,29 +63,21 @@ public class ClientTCP {
 		}
 	} 	
 	
-	public String transmettreChaine(String uneChaine) {        
-		String msgServeur = null;
-		try {
-			System.out.println( "Requete client : " + uneChaine );
-			socOut.println( uneChaine );
-			socOut.flush();
-			msgServeur = socIn.readLine();
-			System.out.println( "Reponse serveur : " + msgServeur );
-
-		} catch (UnknownHostException e) {
-			System.err.println("Serveur inconnu : " + e);
-		} catch (IOException e) {
-			System.err.println("Exception entree/sortie:  " + e);
-			e.printStackTrace();
-		}
-		return msgServeur;
+	public BufferedReader getSocIn() {
+		return this.socIn;
+	}
+	
+	public boolean transmettreChaine(String uneChaine) {        
+		socOut.println( uneChaine );
+		socOut.flush();
+		return true;
 	} 
+	
 
 	/* A utiliser pour ne pas deleguer la connexion aux interfaces GUI */
 	public String transmettreChaineConnexionPonctuelle(String uneChaine) {
 		String msgServeur = null;
 		String chaineRetour = "";
-		System.out.println("\nClient connexionTransmettreChaine " + uneChaine);
 		if (connecterAuServeur() == true) {
 			try {
 				socOut.println(uneChaine);
@@ -87,7 +87,6 @@ public class ClientTCP {
 					chaineRetour += msgServeur + "\n";
 					msgServeur = socIn.readLine();
 				}
-				System.out.println("Client msgServeur " + chaineRetour);
 				deconnecterDuServeur();
 			} catch (Exception e) {
 				System.err.println("Exception lors de la connexion client:  " + e);
@@ -100,4 +99,45 @@ public class ClientTCP {
 		return chaineRetour;
 	}
 	
+	public void envoiMessageConnection() {
+		// essaie de connection au serveur 
+		this.transmettreChaine(nomUtilesateur + " " +motDePasse);
+	}
+	
+	public boolean envoiMessage(String destinataire, String message) {
+		// Structure d'envois de message au serveur a destination d'un client 
+		return this.transmettreChaine(destinataire + " " + message);
+	}
+	
+	public boolean demandListeUtilisateur() {
+		// Structure de demande de liste des utilisateurs connectees 
+		return this.transmettreChaine("UserList");
+	}
+	
+	public void setUtilisateurInfos(String nomUtilisateur, String motDePasse) {
+		// etabilsement des informations de l'utilisateur
+		this.nomUtilesateur = nomUtilisateur;
+		this.motDePasse = motDePasse;
+	}
+	
+	public boolean getConnectionState() {
+		// pour savoir externement l'etat du client
+		return etatConnection;
+	}
+	
+	public void setConnectionState(boolean state) {
+		this.etatConnection = state;
+	}
+	
+	public boolean connectionAuServeurBase() {
+		//connection de l'application client au serveur
+		return this.connecterAuServeur();
+	}
+	
+	public void connectionAuServeur() {
+		// connection du client sur son compte
+		while( !etatConnection ) {
+			this.envoiMessageConnection();
+		}
+	}
 }
