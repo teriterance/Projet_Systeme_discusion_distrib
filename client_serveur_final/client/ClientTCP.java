@@ -21,7 +21,6 @@ public class ClientTCP {
 	 
 	boolean etatConnection;
 	
-	
 	/** Un client se connecte a un serveur identifie par un nom (unNomServeur), sur un port unNumero */
 	public  ClientTCP(String unNomServeur, int unNumero) {        
 		numeroPort = unNumero;
@@ -101,7 +100,7 @@ public class ClientTCP {
 	
 	public void envoiMessageConnection() {
 		// essaie de connection au serveur 
-		this.transmettreChaine(nomUtilesateur + " " +motDePasse);
+		this.transmettreChaine(nomUtilesateur + ":" +motDePasse);
 	}
 	
 	public boolean envoiMessage(String destinataire, String message) {

@@ -44,15 +44,13 @@ public class Client {
 		threadRecevoir.start();
 		
 		while( !serveurClient.getConnectionState() ) {
+			System.out.println(serveurClient.getConnectionState());
 			serveurClient.setUtilisateurInfos("toto", "1234");
 			serveurClient.connectionAuServeur();
 		}
 		
-		boolean end = false;
-		
-		while ( !end ) {
-			serveurClient.envoiMessage("toto", "bonjour");
-		}
+		serveurClient.envoiMessage("toto", "bonjour");
+
 	}
 
 }
