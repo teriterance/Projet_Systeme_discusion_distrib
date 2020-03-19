@@ -41,6 +41,18 @@ public class Client {
 		this.serveurClient.connectionAuServeurBase();
 		
 		threadRecevoir = new Recevoir(serveurClient.getSocIn(), this);
+		threadRecevoir.start();
+		
+		while( !serveurClient.getConnectionState() ) {
+			serveurClient.setUtilisateurInfos("toto", "1234");
+			serveurClient.connectionAuServeur();
+		}
+		
+		boolean end = false;
+		
+		while ( !end ) {
+			serveurClient.envoiMessage("toto", "bonjour");
+		}
 	}
 
 }

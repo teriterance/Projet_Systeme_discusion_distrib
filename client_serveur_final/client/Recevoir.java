@@ -18,7 +18,9 @@ public class Recevoir extends Thread {
 	
 	@Override
 	public void run() {
-		while( client.etatconnection()) {
+		
+		while( true) {
+			System.out.println("bonjour");
 			try {
 				String msg = socIn.readLine();
 				String[] mesage  = msg.split("*");
