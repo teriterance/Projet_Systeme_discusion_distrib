@@ -101,7 +101,7 @@ public class ClientTCP {
 	
 	public void envoiMessageConnection() {
 		// essaie de connection au serveur 
-		this.transmettreChaine(nomUtilesateur + " " +motDePasse);
+		this.transmettreChaine(nomUtilesateur + ":" +motDePasse);
 	}
 	
 	public boolean envoiMessage(String destinataire, String message) {
