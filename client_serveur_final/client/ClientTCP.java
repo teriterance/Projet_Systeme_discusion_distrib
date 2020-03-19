@@ -21,7 +21,6 @@ public class ClientTCP {
 	 
 	boolean etatConnection;
 	
-	
 	/** Un client se connecte a un serveur identifie par un nom (unNomServeur), sur un port unNumero */
 	public  ClientTCP(String unNomServeur, int unNumero) {        
 		numeroPort = unNumero;
