@@ -19,8 +19,7 @@ public class Recevoir extends Thread {
 	@Override
 	public void run() {
 		
-		while( true) {
-			System.out.println("bonjour");
+		while( this.client.serveurConnected()) {
 			try {
 				String msg = socIn.readLine();
 				String[] mesage  = msg.split(":");
@@ -32,13 +31,13 @@ public class Recevoir extends Thread {
 						client.updateMessage(mesage[1], mesage[2]);
 					
 					}else {
-						if (mesage[0] == "userList") {
+						if (mesage[1] == "userList") {
 							//ajout de client a la liste des clients
 							for (int i= 1; i < mesage.length; i++) {
 								client.addUser(mesage[i]);
 							}
 						}else {
-							if(mesage[0] == "ConnectWin") {
+							if(mesage[1] == "ConnectWin") {
 								client.setConnectionState(true);
 							}
 						}

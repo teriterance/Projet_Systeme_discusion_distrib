@@ -1,6 +1,7 @@
 package client;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Client {
 	private ClientTCP serveurClient;
@@ -32,25 +33,42 @@ public class Client {
 		return this.Nom;
 	}
 	
+	public boolean serveurConnected() {
+		return this.serveurClient.serveurConnected();
+	}
+	
 	public void setConnectionState(boolean b) {
 		serveurClient.setConnectionState(b);
 	}
 	
 	public void launch() {
 		
-		this.serveurClient.connectionAuServeurBase();
+		Scanner reader = new Scanner(System.in);
 		
+		System.out.println("Bonjour Bienvenu sur la version console de notre client \ntentative de connection au serveur");
+		this.serveurClient.connectionAuServeurBase();
+		System.out.println("connection reussie");
+		
+		//initialisation du thread de reception 
 		threadRecevoir = new Recevoir(serveurClient.getSocIn(), this);
-		threadRecevoir.start();
+		threadRecevoir.start(); //lancement du thread 
 		
 		while( !serveurClient.getConnectionState() ) {
-			System.out.println(serveurClient.getConnectionState());
-			serveurClient.setUtilisateurInfos("toto", "1234");
+			System.out.println("veuillez vous authentifier");
+			String nom = reader.nextLine();
+			String motdepasse = reader.nextLine();
+			
+			//authetification
+			serveurClient.setUtilisateurInfos(nom, motdepasse);
 			serveurClient.connectionAuServeur();
 		}
 		
-		serveurClient.envoiMessage("toto", "bonjour");
-
+		while (this.serveurConnected()) {
+			String cible = reader.nextLine();
+			String message = reader.nextLine();
+			
+			serveurClient.envoiMessage(cible, message);
+		}
 	}
 
 }

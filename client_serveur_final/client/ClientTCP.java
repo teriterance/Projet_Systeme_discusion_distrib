@@ -19,7 +19,8 @@ public class ClientTCP {
 	
 	private String motDePasse;
 	 
-	boolean etatConnection;
+	boolean etatConnection = false;
+	boolean connectionServeur  = false;
 	
 	/** Un client se connecte a un serveur identifie par un nom (unNomServeur), sur un port unNumero */
 	public  ClientTCP(String unNomServeur, int unNumero) {        
@@ -37,6 +38,7 @@ public class ClientTCP {
 			socIn = new BufferedReader ( 
 					new InputStreamReader (socketServeur.getInputStream()));
 			ok = true;
+			this.connectionServeur = true;
 		} catch (UnknownHostException e) {
 			System.err.println("Serveur inconnu : " + e);
 
@@ -122,6 +124,10 @@ public class ClientTCP {
 	public boolean getConnectionState() {
 		// pour savoir externement l'etat du client
 		return etatConnection;
+	}
+	
+	public boolean serveurConnected() {
+		return this.connectionServeur;
 	}
 	
 	public void setConnectionState(boolean state) {
