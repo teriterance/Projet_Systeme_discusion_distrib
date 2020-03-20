@@ -22,6 +22,7 @@ public class Recevoir extends Thread {
 		while( this.client.serveurConnected()) {
 			try {
 				String msg = socIn.readLine();
+				System.out.println(msg);
 				String[] mesage  = msg.split(":");
 				if (mesage[0] == client.getClientName()){
 					//le mesage est pour nous

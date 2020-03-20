@@ -17,6 +17,7 @@ public class Client {
 	
 	public void addUser(String nom) {
 		// ajoute un utilisateur a la liste des utilisateur 
+		System.out.println("un nouvel utilisateur se connecte " + nom);
 		userList.add(nom);
 	}
 	
@@ -53,6 +54,7 @@ public class Client {
 		threadRecevoir = new Recevoir(serveurClient.getSocIn(), this);
 		threadRecevoir.start(); //lancement du thread 
 		
+		
 		while( !serveurClient.getConnectionState() ) {
 			System.out.println("veuillez vous authentifier");
 			String nom = reader.nextLine();
@@ -63,12 +65,19 @@ public class Client {
 			serveurClient.connectionAuServeur();
 		}
 		
-		while (this.serveurConnected()) {
+		while ( this.serveurConnected() ) {
+			System.out.println("envoyer un message");
+			
+			System.out.println("entrer la cible");
 			String cible = reader.nextLine();
+			System.out.println("entrer le message");
 			String message = reader.nextLine();
 			
+			//envoi du message
 			serveurClient.envoiMessage(cible, message);
 		}
+		
+		reader.close();
 	}
 
 }
