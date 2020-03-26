@@ -2,6 +2,7 @@ package client;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
 	private ClientTCP serveurClient;
@@ -63,6 +64,9 @@ public class Client {
 			//authetification
 			serveurClient.setUtilisateurInfos(this.Nom, motdepasse);
 			serveurClient.connectionAuServeur();
+			
+			System.out.println("entrer pour valider");
+			reader.nextLine();
 		}
 		
 		while ( this.serveurConnected() ) {
