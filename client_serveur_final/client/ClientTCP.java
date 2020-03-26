@@ -141,8 +141,6 @@ public class ClientTCP {
 	
 	public void connectionAuServeur() {
 		// connection du client sur son compte
-		while( !etatConnection ) {
 			this.envoiMessageConnection();
-		}
 	}
 }

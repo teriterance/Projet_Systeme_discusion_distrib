@@ -24,9 +24,10 @@ public class Recevoir extends Thread {
 				String msg = socIn.readLine();
 				System.out.println(msg);
 				String[] mesage  = msg.split(":");
+				
 				if (mesage[0] == client.getClientName()){
 					//le mesage est pour nous
-					
+					System.out.println(mesage[0]);
 					if ( isUser(mesage[1]) ) {
 						//c'est un message d'un autre utilisateur 
 						client.updateMessage(mesage[1], mesage[2]);

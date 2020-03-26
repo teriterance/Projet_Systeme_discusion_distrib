@@ -1,5 +1,7 @@
 package client;
 
-public class ClientGUI {
+import javafx.application.Application;
 
+public class ClientGUI {
+ 
 }
