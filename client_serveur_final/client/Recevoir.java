@@ -24,22 +24,23 @@ public class Recevoir extends Thread {
 				String msg = socIn.readLine();
 				System.out.println(msg);
 				String[] mesage  = msg.split(":");
-				
-				if (mesage[0] == client.getClientName()){
+				if ( mesage[0].equals(client.getClientName()) ){
 					//le mesage est pour nous
-					System.out.println(mesage[0]);
+					
 					if ( isUser(mesage[1]) ) {
 						//c'est un message d'un autre utilisateur 
 						client.updateMessage(mesage[1], mesage[2]);
-					
+						
 					}else {
-						if (mesage[1] == "userList") {
+						
+						if (mesage[1].equals("userList") ) {
 							//ajout de client a la liste des clients
 							for (int i= 1; i < mesage.length; i++) {
 								client.addUser(mesage[i]);
 							}
 						}else {
-							if(mesage[1] == "ConnectWin") {
+							if(mesage[1].equals("ConnectWin") ){
+								System.out.println(mesage[1]);
 								client.setConnectionState(true);
 							}
 						}
@@ -55,7 +56,7 @@ public class Recevoir extends Thread {
 	
 	public boolean isUser(String name) {
 		
-		return true;
+		return false;
 	}
 
 }

@@ -7,7 +7,7 @@ public class Client {
 	private ClientTCP serveurClient;
 	private String Nom;
 	private String MotDePasse;
-	private Recevoir threadRecevoir; 
+	private Recevoir threadRecevoir;
 	ArrayList<String> userList;
 	
 	public Client(String unNomServeur, int unNumero) {
@@ -57,11 +57,11 @@ public class Client {
 		
 		while( !serveurClient.getConnectionState() ) {
 			System.out.println("veuillez vous authentifier");
-			String nom = reader.nextLine();
+			this.Nom = reader.nextLine();
 			String motdepasse = reader.nextLine();
 			
 			//authetification
-			serveurClient.setUtilisateurInfos(nom, motdepasse);
+			serveurClient.setUtilisateurInfos(this.Nom, motdepasse);
 			serveurClient.connectionAuServeur();
 		}
 		

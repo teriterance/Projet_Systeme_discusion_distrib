@@ -16,7 +16,7 @@ public class Protocole1 implements IProtocole {
 	boolean etatconnexion;
 	public LinkedList<Utilisateur> UsersList;
 	public Protocole1() {
-		etatconnexion = false; //initialisation à false 
+		etatconnexion = false; //initialisation ï¿½ false 
 		UsersList = new LinkedList<Utilisateur>(); 
 	}
 	public void execute( IContext c , InputStream unInput , OutputStream unOutput,Socket clientSocket ) {
@@ -35,6 +35,9 @@ public class Protocole1 implements IProtocole {
 					String chaines[] = inputReq.split(":");
 					System.out.println(chaines[0] + " et " + chaines[1]);
 					Authentification authen = new Authentification(chaines[0], chaines[1]);
+					
+					os.println("toto:ConnectWin");
+					
 					if (authen.run()) {
 						valeurExpediee = "OK";
 						System.out.println(" Reponse serveur "	+ valeurExpediee);
@@ -48,7 +51,7 @@ public class Protocole1 implements IProtocole {
 						System.out.println(" Reponse serveur "	+ valeurExpediee);
 					}
 					os.println(valeurExpediee);
-					         // Le client est bien connecté
+					         // Le client est bien connectï¿½
 				}
 			}
 			if(etatconnexion) execute_connexion_OK(c, unInput, unOutput, clientSocket);
