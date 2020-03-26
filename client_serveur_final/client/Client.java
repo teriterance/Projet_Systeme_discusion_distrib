@@ -18,7 +18,7 @@ public class Client {
 	public void addUser(String nom) {
 		// ajoute un utilisateur a la liste des utilisateur 
 		System.out.println("un nouvel utilisateur se connecte " + nom);
-		userList.add(nom);
+		userList.add(nom); 
 	}
 	
 	public boolean etatconnection() {
