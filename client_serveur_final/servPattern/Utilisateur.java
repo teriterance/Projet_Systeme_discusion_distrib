@@ -15,12 +15,13 @@ public class Utilisateur {
 	public Socket getclientSocket() {
 		return clientSocket;
 	}
+	
 	public String getnom() {
 		return nom;
 	}
+	
 	public String toString() {
 		return "Le clientsocket est : " + clientSocket + " et le nom d'utilisateur est " + nom;
 		
 	}
-
 }

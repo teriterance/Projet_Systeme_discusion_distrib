@@ -7,7 +7,7 @@ public class ServeurTCP extends Thread{
 
 	private static int nbConnexions = 0;
 	
-	/** Maximum de connexions client autorisées */
+	//Maximum de connexions client autorisées
 	private int maxConnexions;
 	
 	private Socket clientSocket;
@@ -29,20 +29,8 @@ public class ServeurTCP extends Thread{
 		protocole = p;
 	}
 
-	public void setBanqueCentrale(IContext uneBanque) {        
-		contexte = uneBanque;
-	} 
-
-	public IContext getBanqueCentrale() {        
-		return contexte;
-	} 
-
-	public String toString() {        
-		return "[ServeurTCP] Port : " +  numeroPort + ", Contexte: " + contexte ;
-	} 
-
-	/* l'ancienne methode go est remplacee par run */
-	public void run() {        
+	public void run() {
+		
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket ( numeroPort );
@@ -51,9 +39,9 @@ public class ServeurTCP extends Thread{
 			System.exit(1);
 		}
 
-		
 		/* On autorise maxConnexions traitements*/
-		while (nbConnexions <= maxConnexions) {
+		while (nbConnexions <= maxConnexions) 
+		{
 			try {
 				System.out.println(" Attente du serveur pour la communication d'un client " );
 				clientSocket = serverSocket.accept();
@@ -63,6 +51,7 @@ public class ServeurTCP extends Thread{
 				System.out.println("Accept failed: " + serverSocket.getLocalPort() + ", " + e);
 				System.exit(1);
 			}
+			
 			ProcessusTransaction st = new ProcessusTransaction( clientSocket , this );
 			st.start();
 		}
@@ -77,7 +66,6 @@ public class ServeurTCP extends Thread{
 
 	} 
 	
-
 	public IProtocole getProtocole() {
 		return protocole;
 	}
@@ -85,6 +73,9 @@ public class ServeurTCP extends Thread{
 	public IContext getContexte() {
 		return contexte;
 	}
+	
+	public String toString() {        
+		return "[ServeurTCP] Port : " +  numeroPort + ", Contexte: " + contexte ;
+	} 
 		
-
 }
