@@ -9,21 +9,23 @@ import java.util.LinkedList;
 
 import servPattern.Authentification;
 import servPattern.IContext;
+import servPattern.Contexte;
 import servPattern.IProtocole;
 import servPattern.Utilisateur;
 
 public class Protocole1 implements IProtocole {
 	
-	boolean etatLogin;
-	public LinkedList<Utilisateur> UsersList;
-	
+	private Contexte contexte;
+		
 	public Protocole1() {
-		etatLogin = false;
-		UsersList = new LinkedList<Utilisateur>(); 
 	}
 	
 	//Protocole do login
 	public void execute( IContext c , InputStream unInput , OutputStream unOutput,Socket clientSocket ) {
+		
+		this.contexte = (Contexte) c;
+		
+		boolean etatLogin = false;
 		
 		String inputReq;
 		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));
@@ -32,15 +34,13 @@ public class Protocole1 implements IProtocole {
 		try {
 			//Boucles jusqu'à ce que le login soit réussie
 			while(!etatLogin) {
-				
-				System.out.println("----dans le boucle");
-				
+								
 				String valeurExpediee = "";
 				
 				//Lecture du message du client.
 				if ((inputReq = is.readLine()) != null) {
 
-					System.out.println(" Identifiants Recus " + inputReq);
+					System.out.println("Identifiants Recus " + inputReq);
 					String chaines[] = inputReq.split(":");
 					System.out.println(chaines[0] + " et " + chaines[1]);
 					Authentification authen = new Authentification(chaines[0], chaines[1]);
@@ -48,26 +48,20 @@ public class Protocole1 implements IProtocole {
 					//Login réussie
 					if (authen.run()) 
 					{
-						valeurExpediee = "OK";
+						valeurExpediee = "login:OK";
 						System.out.println("Reponse serveur: "	+ valeurExpediee);
-						etatLogin = true; 
-						UsersList.add(new Utilisateur(clientSocket, chaines[0]));
-						/*
-						for(Utilisateur user : UsersList)
-							System.out.print(user);*/
+						etatLogin = true;
+						this.contexte.addNewUser(chaines[0], clientSocket);
 					}
 					//Login échouée
 					else 
 					{
-						valeurExpediee = "NOP";
+						valeurExpediee = "login:NO";
 						System.out.println("Reponse serveur: "	+ valeurExpediee);
 					}
 					
-					System.out.println("before send");
 					//Indique au client si le login a réussi ou pas
 					os.println(valeurExpediee);
-					System.out.println("After send");
-
 				}
 			}
 			
@@ -75,14 +69,14 @@ public class Protocole1 implements IProtocole {
 			execute_connexion_OK(c, unInput, unOutput, clientSocket);
 			
 		} catch ( Exception e) {
-			System.out.println(" Pb d'exception: " + e);
+			System.out.println("Pb d'exception: " + e);
 			e.printStackTrace();
 		}			
 	}
 	
 	public void execute_connexion_OK(IContext c, InputStream unInput , OutputStream unOutput, Socket clientSocket) 
 	{
-		System.out.println("execute_connexion_OK");
+		boolean etatLogin = true;
 		
 		String inputReq;
 		BufferedReader is = new BufferedReader(new InputStreamReader(unInput));
@@ -91,27 +85,42 @@ public class Protocole1 implements IProtocole {
 		try {
 			while(etatLogin) {
 				String valeurExpediee = "";
+				
 				if ((inputReq = is.readLine()) != null) 
 				{
-					System.out.println("Message Recu: " + inputReq);
-					String chaines[] = inputReq.split(":",2);
 					
-					//A faire, protocole de communication
-					if (chaines[0].contentEquals("stop")) 
+					System.out.println("Reçu du client: " + inputReq);
+					
+					String[] inputReqs  = inputReq.split(":");
+					
+					switch(inputReqs[0])
 					{
-						valeurExpediee = "OK";
-						System.out.println("Reponse serveur: "	+ valeurExpediee);
-						etatLogin = false;
+						case "message":
+							//A faire:  Envoyer le message au bon destinateur
+							String emetteur = inputReqs[1];
+							String destinateur = inputReqs[2];
+							String message = inputReqs[3];
+							
+							Socket destinateurSocket = this.contexte.getUserSocket(destinateur);
+							
+							if(destinateurSocket == null)
+							{
+								System.out.println("destinateurSocket is null");
+							}
+							
+							PrintStream destinateurStream = new PrintStream(destinateurSocket.getOutputStream());
+							destinateurStream.println("message:" + emetteur + ":" + message);
+		
+							System.out.println(emetteur + "->" + destinateur + ":"+ message  );
+							
+							break;
+						case "userslist":
+							
+							String onlineUsers = this.contexte.getOnlineUsers();
+							valeurExpediee = "userslist:" + onlineUsers;
+							os.println(valeurExpediee);
+							break;
 					}
-					else 
-					{   //on transmet le message du client vers le destinataire en chaines[0]
-						//if(ledistinataireexisteetquilestconnecte) {
-						//toledestinataire.envoieMSG;
-						//}
-						valeurExpediee = inputReq;
-						System.out.println(" Reponse serveur: "	+ valeurExpediee);
-					}
-					os.println(valeurExpediee);
 				}
 			}
 			
@@ -119,6 +128,7 @@ public class Protocole1 implements IProtocole {
 			
 		} catch ( Exception e) {
 			System.out.println("Pb d'exception");
+			e.printStackTrace();
 		}	
 	}
 }

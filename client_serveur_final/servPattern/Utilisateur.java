@@ -7,12 +7,12 @@ public class Utilisateur {
 	private Socket clientSocket;
 	private String nom;
 	
-	public Utilisateur(Socket clientSocket, String nom) {
-		this.clientSocket = clientSocket;
+	public Utilisateur(String nom, Socket clientSocket) {
 		this.nom = nom;
+		this.clientSocket = clientSocket;
 	}
 	
-	public Socket getclientSocket() {
+	public Socket getClientSocket() {
 		return clientSocket;
 	}
 	

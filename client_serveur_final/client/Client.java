@@ -59,12 +59,15 @@ public class Client {
 		while( !serveurClient.getConnectionState() ) {
 			System.out.println("veuillez vous authentifier");
 			this.Nom = reader.nextLine();
+			
+			//why is there no this here?
 			String motdepasse = reader.nextLine();
 			
 			//authetification
 			serveurClient.setUtilisateurInfos(this.Nom, motdepasse);
 			serveurClient.connectionAuServeur();
 			
+			//This should be removed if possible
 			System.out.println("entrer pour valider");
 			reader.nextLine();
 		}
@@ -78,7 +81,8 @@ public class Client {
 			String message = reader.nextLine();
 			
 			//envoi du message
-			serveurClient.envoiMessage(cible, message);
+			serveurClient.envoiMessage("message:" + this.Nom + ":" + cible, message);
+			//serveurClient.envoiMessage("userslist", "");
 		}
 		
 		reader.close();
