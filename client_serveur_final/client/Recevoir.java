@@ -19,14 +19,19 @@ public class Recevoir extends Thread {
 	@Override
 	public void run() {
 		
-		while( this.client.serveurConnected()) {
-			try {
-				String msg = socIn.readLine();
-				System.out.println(msg);
-				String[] mesage  = msg.split(":");
-				if ( mesage[0].equals(client.getClientName()) ){
-					//le mesage est pour nous
+		String msg;
+		
+		while( this.client.serveurConnected()) 
+		{
+			try 
+			{
+				//il y a quelque chose à lire
+				if( (msg = socIn.readLine()) != null)
+				{
+					System.out.println("Reçu du serveur: " + msg);
+					String[] message  = msg.split(":");
 					
+
 					if ( isUser(mesage[1]) ) {
 						//c'est un message d'un autre utilisateur
 						System.out.println(mesage[1]+ ":" + mesage[2]);
@@ -43,15 +48,35 @@ public class Recevoir extends Thread {
 								System.out.println(mesage[1]);
 								client.setConnectionState(true);
 							}
-						}
+							else
+							{
+								System.out.println("Nom d'utilisateur ou mot de passe erroné");
+							}
+							break;
+							
+						case "userslist":
+							
+							for (int i= 1; i < message.length; i++) 
+							{
+								client.addUser(message[i]);
+							}
+							
+							break;
+							
+						case "message":
+							
+							client.updateMessage(message[1], message[2]);
+							
+							break;
 					}
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) 
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public boolean isUser(String name) {
