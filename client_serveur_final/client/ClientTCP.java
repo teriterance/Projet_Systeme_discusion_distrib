@@ -107,7 +107,7 @@ public class ClientTCP {
 	
 	public boolean envoiMessage(String destinataire, String message) {
 		// Structure d'envois de message au serveur a destination d'un client 
-		return this.transmettreChaine(destinataire + " " + message);
+		return this.transmettreChaine(destinataire + ":" + this.nomUtilesateur + ":" + message);
 	}
 	
 	public boolean demandListeUtilisateur() {

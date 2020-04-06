@@ -28,8 +28,8 @@ public class Recevoir extends Thread {
 					//le mesage est pour nous
 					
 					if ( isUser(mesage[1]) ) {
-						//c'est un message d'un autre utilisateur 
-						client.updateMessage(mesage[1], mesage[2]);
+						//c'est un message d'un autre utilisateur
+						System.out.println(mesage[1]+ ":" + mesage[2]);
 						
 					}else {
 						
@@ -55,8 +55,10 @@ public class Recevoir extends Thread {
 	}
 	
 	public boolean isUser(String name) {
-		
-		return false;
+		if (this.client.getUserList().contains(name))
+			return true;
+		else
+			return false;
 	}
 
 }
