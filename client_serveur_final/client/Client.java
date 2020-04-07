@@ -7,8 +7,9 @@ import java.util.concurrent.TimeUnit;
 public class Client {
 	private ClientTCP serveurClient;
 	private String Nom;
+	private String MotDePasse;
 	private Recevoir threadRecevoir;
-	private ArrayList<String> userList;
+	ArrayList<String> userList;
 	
 	public Client(String unNomServeur, int unNumero) {
 		userList = new ArrayList<String>();
@@ -19,9 +20,6 @@ public class Client {
 		// ajoute un utilisateur a la liste des utilisateur 
 		System.out.println("un nouvel utilisateur se connecte " + nom);
 		userList.add(nom); 
-	}
-	public ArrayList<String> getUserList() {
-		return this.userList;
 	}
 	
 	public boolean etatconnection() {

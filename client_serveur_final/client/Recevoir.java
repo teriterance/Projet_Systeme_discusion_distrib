@@ -31,21 +31,11 @@ public class Recevoir extends Thread {
 					System.out.println("Reçu du serveur: " + msg);
 					String[] message  = msg.split(":");
 					
-
-					if ( isUser(mesage[1]) ) {
-						//c'est un message d'un autre utilisateur
-						System.out.println(mesage[1]+ ":" + mesage[2]);
-						
-					}else {
-						
-						if (mesage[1].equals("userList") ) {
-							//ajout de client a la liste des clients
-							for (int i= 1; i < mesage.length; i++) {
-								client.addUser(mesage[i]);
-							}
-						}else {
-							if(mesage[1].equals("ConnectWin") ){
-								System.out.println(mesage[1]);
+					switch(message[0])
+					{
+						case "login":
+							if (message[1].equals("OK"))
+							{
 								client.setConnectionState(true);
 							}
 							else
@@ -70,6 +60,7 @@ public class Recevoir extends Thread {
 							break;
 					}
 				}
+
 			}
 			catch (IOException e) 
 			{
@@ -78,12 +69,4 @@ public class Recevoir extends Thread {
 			}
 		}
 	}
-	
-	public boolean isUser(String name) {
-		if (this.client.getUserList().contains(name))
-			return true;
-		else
-			return false;
-	}
-
 }
