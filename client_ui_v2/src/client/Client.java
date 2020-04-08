@@ -1,19 +1,28 @@
 package client;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import application.Main;
 
 public class Client {
 	private ClientTCP serveurClient;
+	//Vrai si admin
+	private boolean admin = false;
 	private String Nom;
 	private String MotDePasse;
 	private Recevoir threadRecevoir;
+	private Main ClientGUI; 
+	private String[] args;
+	public int compteur;
 	ArrayList<String> userList;
 	
 	public Client(String unNomServeur, int unNumero) {
 		userList = new ArrayList<String>();
 		serveurClient = new ClientTCP(unNomServeur, unNumero);
+		compteur = 0;
+
 	}
 	
 	public void addUser(String nom) {
@@ -28,6 +37,7 @@ public class Client {
 	
 	public String updateMessage(String source, String unMessage) {
 		System.out.println(source + " " + unMessage);
+		compteur++;
 		return source + " " + unMessage;
 	}
 	
@@ -35,8 +45,8 @@ public class Client {
 		return this.Nom;
 	}
 	
-	public void envoiMessage(String message, String cible) {
-		serveurClient.envoiMessage("message:" + this.Nom + ":" + cible, message);
+	public void envoiMessage(String emetteur, String message, String cible) {
+		serveurClient.envoiMessage("message:" + emetteur + ":" + cible, message);
 	}
 	
 	public boolean serveurConnected() {
@@ -45,6 +55,34 @@ public class Client {
 	
 	public void setConnectionState(boolean b) {
 		serveurClient.setConnectionState(b);
+	}
+	
+	
+	public void setUtilisateurInfos(String id, String mdp) {
+		
+		serveurClient.setUtilisateurInfos(id, mdp);
+		
+	}
+	
+	public void connectionAuServeur(){
+		
+		serveurClient.connectionAuServeur();
+	}
+	
+	public void connectionAuServeurBase() {
+		
+		serveurClient.connectionAuServeurBase();
+		
+	}
+	public boolean getConnectionState() {
+		
+		return serveurClient.getConnectionState();
+		
+	}
+	
+	public BufferedReader getSocIn() {
+		
+		return serveurClient.getSocIn();
 	}
 	
 	public void launch() {
@@ -90,6 +128,22 @@ public class Client {
 		}
 		
 		reader.close();
+	}
+	
+	public void setAdmin(boolean admin)
+	{
+		this.admin = admin;
+	}
+	
+	
+	public boolean isAdmin()
+	{
+		return this.admin;
+	}
+	
+	public void send(String msg)
+	{
+		this.serveurClient.transmettreChaine(msg);
 	}
 
 }

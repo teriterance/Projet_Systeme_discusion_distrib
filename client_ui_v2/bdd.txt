@@ -1,0 +1,6 @@
+normal:toto:1234
+normal:lala:12345
+admin:tony:54321
+admin:dasdasd:dadad
+admin:goiabada:111
+normal:eu:vc
